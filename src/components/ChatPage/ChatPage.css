@@ -1,0 +1,88 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    width:100%;
+    min-width:1000px
+}
+
+#root {
+    width: 100%;
+}
+
+.wrapper {
+
+}
+
+.chat {
+    max-height: 80vh;
+    min-width: 900px;
+}
+
+.left {
+    width: 20%;
+    min-width: 220px;
+}
+
+.right {
+    width: 65%;
+    min-width: 650px;
+}
+
+.usr_list {
+    max-height: 75vh;
+    min-height: 75vh;
+    overflow-y: auto;
+    min-width: 150px;
+}
+
+.msg_list {
+    max-height: 75vh;
+    min-height: 75vh;
+    overflow-y: auto;
+    min-width: 590px;
+}
+
+.usr_names {
+    max-width: 95%;
+    align-content: center;
+    text-align: center;
+}
+
+.messages {
+    max-width: 95%;
+    align-content: center;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+    min-width: 920px;
+}
+
+.left {
+    width: 20%;
+    min-width: 220px;
+}
+
+.right {
+    width: 65%;
+    min-width: 650px;
+}
+
+.chat_input {
+    width: 600px;
+    min-width: 600px;
+    height: 35px;
+    margin-right:15px;
+}
+
+.btn-success{
+    height: 35px;
+    width: 100px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

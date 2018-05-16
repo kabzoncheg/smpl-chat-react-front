@@ -1,0 +1,28 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    width:100%;
+    min-width:1000px
+}
+
+#root {
+    width: 100%;
+}
+
+.login {
+    padding-top: 10px;
+    max-height: 30vh;
+    min-height: 360px;
+}
+
+.jumbotron {
+    align-content: center;
+    text-align: center;
+
+}
+
+.nick_input {
+    width: 340px;
+}
+.text-danger {
+    padding-top: 10px;
+}

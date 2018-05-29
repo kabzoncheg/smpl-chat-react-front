@@ -1,0 +1,257 @@
+swagger: "2.0"
+info:
+  description: "Sails (https://sailsjs.com/) backend for simple chat"
+  version: "1.0.0"
+  title: "Sails Back"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: "127.0.0.1:1337"
+basePath: "/"
+tags:
+- name: "user"
+  description: "Signin and Logout"
+- name: "chat"
+  description: "Message exchange over WS"
+schemes: ['http', 'ws']
+paths:
+  /user/signup:
+    put:
+      schemes: ["http"]
+      tags:
+      - "user"
+      summary: "Login in the chat"
+      operationId: "Login"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "nickname"
+        type: "string"
+        pattern: "^[a-zA-Z0-9]{1,30}$"
+        minLength: 1
+        maxLength: 30
+      security: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "string"
+                description: "Response status description"
+                example: "success"
+              code:
+                type: "integer"
+                description: "Response status code"
+                example: 201
+              body:
+                type: "object"
+                description: "Response body"
+                example: 
+                  {
+                    "uuid": "97dd044f-3d6b-4f45-9599-93d9443d4984",
+                    "nickname": "Pika4u",
+                    "error": null
+                  }
+  /user/logout:
+    get:
+      schemes: ["http"]
+      tags:
+      - "user"
+      summary: "Log off the chat"
+      operationId: "Logout"
+      produces:
+      - "application/json"
+      security: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "string"
+                description: "Response status description"
+                example: "success"
+              code:
+                type: "integer"
+                description: "Response status code"
+                example: 200
+              body:
+                type: "object"
+                description: "Response body"
+                example: 
+                  {
+                    "msg": "Session does not exist!",
+                    "error": null
+                  }
+  /user/check:
+    put:
+      schemes: ["http"]
+      tags:
+      - "user"
+      summary: "Check user name"
+      operationId: "Check"
+      produces:
+      - "application/json"
+      security: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "string"
+                description: "Response status description"
+                example: "success"
+              code:
+                type: "integer"
+                description: "Response status code"
+                example: 200
+              body:
+                type: "object"
+                description: "Response body"
+                example: 
+                  {
+                    "uuid": "97dd044f-3d6b-4f45-9599-93d9443d4984",
+                    "nickname": "Pika4u",
+                    "error": null
+                  }
+  /chat/populate:
+    get:
+      schemes: ["http"]
+      tags:
+      - "chat"
+      summary: "Prepopulate chat window (HTTP)"
+      description: "Returns list of messages. Number of messages is limited by offset"
+      operationId: "Prepopulate"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "offset"
+        type: "integer"
+      security: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: "string"
+                description: "Response status description"
+                example: "success"
+              code:
+                type: "integer"
+                description: "Response status code"
+                example: 200
+              body:
+                type: "object"
+                description: "Response body"
+                example: 
+                  {
+                    "messages": [
+                      {
+                          "sender": "Pikachu",
+                          "message": "Hi there!",
+                          "guid": "c2e8600c-4122-4127-2f2c-cd1182bd919e",
+                          "createdAt": "2018-05-28T15:38:58.866Z",
+                          "updatedAt": "2018-05-28T15:38:58.866Z",
+                          "id": 6
+                      },
+                      {
+                          "sender": "OMG",
+                          "message": "12378",
+                          "guid": "2bfc9550-5ed0-466d-1cc0-7fff85c2ebad",
+                          "createdAt": "2018-05-28T15:39:02.221Z",
+                          "updatedAt": "2018-05-28T15:39:02.221Z",
+                          "id": 7
+                      }
+                    ],
+                      "error": null
+                  }
+  /chat/join:
+    put:
+      schemes: ["ws"]
+      tags:
+      - "chat"
+      summary: "Join WS exchange"
+      description: "Each cliend must initiate WS connection by sending join"
+      operationId: "wsJoin"
+      security: []
+      responses:
+        200:
+          description: "Since it is WS. no content is returned"
+  /chat/keepalive:
+      post:
+        schemes: ["ws"]
+        tags:
+        - "chat"
+        summary: "Keepalive (WS)"
+        description: "Send WS keepalive. Each client must send authorized user name on regular basis"
+        operationId: "wsKeepalive"
+        consumes:
+        - "application/json"
+        parameters:
+        - in: "body"
+          name: "data"
+          schema:
+            type: "object"
+            required:
+            - "nickname"
+            properties:
+              nickname:
+                type: "string"
+                pattern: "^[a-zA-Z0-9]{1,30}$"
+                minLength: 1
+                maxLength: 30
+                example: "Pika4u"
+        security: []
+        responses:
+          200:
+            description: "Since it is WS. no content is returned"
+  /chat/chat:
+      put:
+        schemes: ["ws"]
+        tags:
+        - "chat"
+        summary: "Send message (WS)"
+        description: "Send message over WS"
+        operationId: "wsSendMessage"
+        consumes:
+        - "application/json"
+        parameters:
+        - in: "body"
+          name: "data"
+          schema:
+            type: "object"
+            properties:
+              sender:
+                type: "string"
+                pattern: "^[a-zA-Z0-9]{1,30}$"
+                minLength: 1
+                maxLength: 30
+                description: "Sender of message"
+              message:
+                type: "string"
+                minLength: 1
+                maxLength: 1000
+                description: "Message to send"
+              guid:
+                type: "string"
+                pattern: "^[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}$"
+                description: "GUID of sender (user)"
+            example:
+              {
+                "sender": "Pika4u",
+                "message": "Hello everybody!",
+                "guid": "2e12dbaf-9f18-40bd-166d-81ecffb7beaa"
+              }
+        security: []
+        responses:
+          200:
+            description: "Since it is WS. no content is returned"
